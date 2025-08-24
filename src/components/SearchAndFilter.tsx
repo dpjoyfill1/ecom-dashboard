@@ -33,13 +33,16 @@ export const SearchAndFilter = ({
 
   // Stable debounced search function
   const debouncedSearch = useCallback(
-    debounce((query: string) => onSearchRef.current(query), 300),
+    (query: string) => {
+      const debouncedFn = debounce((q: string) => onSearchRef.current(q), 300);
+      debouncedFn(query);
+    },
     [] // Empty dependency array - function is stable
   );
 
   useEffect(() => {
     debouncedSearch(searchTerm);
-  }, [searchTerm]); // Only depend on searchTerm
+  }, [searchTerm, debouncedSearch]);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -137,7 +140,7 @@ export const SearchAndFilter = ({
           </span>
           {searchTerm && (
             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">
-              Search: "{searchTerm}"
+              Search: &ldquo;{searchTerm}&rdquo;
               <button
                 onClick={() => setSearchTerm('')}
                 className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50"
