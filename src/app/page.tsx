@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Product, FilterState, SortOption } from '@/types';
 import { api } from '@/lib/api';
 import { productUtils } from '@/lib/utils';
@@ -62,17 +62,17 @@ export default function Home() {
     setFilteredProducts(result);
   }, [products, filters]);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = useCallback((query: string) => {
     setFilters(prev => ({ ...prev, search: query }));
-  };
+  }, []);
 
-  const handleCategoryFilter = (category: string) => {
+  const handleCategoryFilter = useCallback((category: string) => {
     setFilters(prev => ({ ...prev, category }));
-  };
+  }, []);
 
-  const handleSort = (sort: SortOption) => {
+  const handleSort = useCallback((sort: SortOption) => {
     setFilters(prev => ({ ...prev, sort }));
-  };
+  }, []);
 
   const handleRetry = () => {
     window.location.reload();

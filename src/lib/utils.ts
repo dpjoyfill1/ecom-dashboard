@@ -93,15 +93,11 @@ export const productUtils = {
 };
 
 // Debounce utility for search
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const debounce = <T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): ((...args: Parameters<T>) => void) => {
+export function debounce(func: (query: string) => void, wait: number) {
   let timeout: NodeJS.Timeout;
   
-  return (...args: Parameters<T>) => {
+  return function(query: string) {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
+    timeout = setTimeout(() => func(query), wait);
   };
-};
+}

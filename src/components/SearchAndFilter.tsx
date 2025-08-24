@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { SortOption } from '@/types';
 import { debounce } from '@/lib/utils';
 
@@ -23,15 +23,23 @@ export const SearchAndFilter = ({
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSort, setSelectedSort] = useState<SortOption>('title-asc');
 
-  // Memoized debounced search function
+  // Use useRef to maintain stable reference to onSearch
+  const onSearchRef = useRef(onSearch);
+  
+  // Update ref when onSearch changes
+  useEffect(() => {
+    onSearchRef.current = onSearch;
+  }, [onSearch]);
+
+  // Stable debounced search function
   const debouncedSearch = useCallback(
-    debounce(onSearch, 300),
-    [onSearch]
+    debounce((query: string) => onSearchRef.current(query), 300),
+    [] // Empty dependency array - function is stable
   );
 
   useEffect(() => {
     debouncedSearch(searchTerm);
-  }, [searchTerm, debouncedSearch]);
+  }, [searchTerm]); // Only depend on searchTerm
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
