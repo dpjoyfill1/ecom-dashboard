@@ -48,7 +48,7 @@ export default function ProductDetail() {
       setAddingToCart(true);
       addToCart(product, quantity);
       setTimeout(() => setAddingToCart(false), 1000);
-    } catch (err) {
+    } catch {
       setAddingToCart(false);
     }
   };

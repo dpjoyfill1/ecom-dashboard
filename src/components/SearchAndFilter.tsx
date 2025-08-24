@@ -31,7 +31,7 @@ export const SearchAndFilter = ({
 
   useEffect(() => {
     debouncedSearch(searchTerm);
-  }, [searchTerm]);
+  }, [searchTerm, debouncedSearch]);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
